@@ -22,7 +22,6 @@ Methods:
 
 '''
 
-
 class appointment:
 
 
