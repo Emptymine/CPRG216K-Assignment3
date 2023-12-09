@@ -132,7 +132,7 @@ def save_scheduled_appointments():#Gordon
 def cancel_appointment(): #Nam
     pass
 
-def schedule_appointment():
+def schedule_appointment(): #Gordon
     print ("** Schedule an appintment **")
     day_of_week = input("What day: ")
     start_time_hour = int(input("Enter start hour (24 hour clock): "))
