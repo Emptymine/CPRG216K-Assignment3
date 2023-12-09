@@ -1,63 +1,85 @@
+# Group 9 - (Gordon) Chi Wai Tsui, (Sam) Ho Sum Chan, Grantly Tong 
+# Date 08-Dec-2023
+
+
+#import appointment as ap for the Class "Appointment" and its method
 import appointment as ap
-appt_list={}
-week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-def create_weekly_calendar():#Nam
+#import os module for checking the file exist or nto
+import os
+#define the weekly calendar to save the appointment objects
+weekly_calendar = []
+#define the days and available hours for the object attributes. 
+days_of_the_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+available_hours = [9, 10, 11, 12, 13, 14, 15, 16]
+
+
+def create_weekly_calendar():#Nam - Grantly Tong
     '''
     1. Iterates through each day of the week (Monday to Saturday)
     2. For each day, iterates through each available hour (9 to 16)
     3. For each hour, creates new Appointment object and adds it to the appointment list (i.e. calendar)
 
     '''
-
-    calendar = []
-    days_of_the_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    available_hours = ["09", "10", "11", "12", "13", "14", "15", "16"]
-
     for day in days_of_the_week:
         for hour in available_hours:
-            obj = apt.appointment(day, hour)
-            calendar.append(obj)
+            appt = ap.Appointment(day, hour)
+            weekly_calendar.append(appt)
 
-    return calendar
+    return weekly_calendar
     
-
-def find_appointment_by_time(calender, day, start_hour):#Nam
+def find_appointment_by_time(day_of_week, start_time_hour):#Nam - Grantly Tong
     '''
     1. Receives the day and start hour of the appointment to find
     2. Searches the list of Appointments for corresponding day and start hour
     3. If the appointment is found, returns the Appointment object, otherwise returns nothing
 
     '''
-    for appointment in calender:
-        if appointment.get_day_of_week() == day and appointment.get_start_time_hour() == start_hour:
+    for appointment in weekly_calendar:
+        if appointment.get_day_of_week() == day_of_week and appointment.get_start_time_hour() == start_time_hour:
             return appointment
 
     return None
 
-def load_scheduled_appointments():#Gordon
+def load_scheduled_appointments():#Gordon - Chi Wai Tsui
     '''
     1. Inputs appointment filename from user
     2. Iterates over each line (i.e. appointment) in the file, parsing the attribute values into separate variables
     3. Calls find_appointment_by_time() to locate the corresponding appointment in the list and invoke the schedule() method to set the properties appropriately
     4. Returns the number of scheduled appointments loaded
     '''
-    fileOpen = input("Enter appointment filename: ")
-    openUp = open(fileOpen, "r")
-    appt_num=0
-    for info in openUp.readlines():
-        info = info.rstrip("\n")
-        appt = info.split(",")
-        client_name = appt[0]
-        client_phone = appt[1]
-        appt_type = int(appt[2])
-        day_of_week = appt[3]
-        start_time_hour = int(appt[4])
-        appt_num +=1
-        find_appointment_by_time(day_of_week,start_time_hour)
-        appt_list[day_of_week][start_time_hour]=ap.Appointment(day_of_week,start_time_hour)
-        appt_list[day_of_week][start_time_hour].schedule(client_name,client_phone,appt_type)
-    openUp.close()
-    print(f"{appt_num} previously scheduled appointments have been loaded")
+    # Get user input to confirm if they want to import the data from previous file
+    load = input("Would you like to load previously scheduled appointments form a file (Y/N)?")
+    if load.upper() == "Y":
+        fileOpen = input("Enter appointment filename: ")
+        # check if the file name exist or not using the os module, if not, user need to re-enter until it is correct
+        # Better to consider a exit mechanism in case user just wrongly type "y", otherwise it has to kill the program to restart. 
+        while os.path.exists(fileOpen) == False:
+            fileOpen = input("File not found. Re-enter appointment filename: ")
+        else:
+            #open up the file as read only
+            openUp = open(fileOpen, "r")
+            #declare the apptointment number read as 0 first
+            appt_num=0
+            for info in openUp.readlines():
+                #using rstrip() to remove the '\n' at the end of each line
+                info = info.rstrip("\n")
+                #split menthod to get the readline into a list by separate it with each comma
+                appt = info.split(",")
+                #assign the value to variable
+                client_name = appt[0]
+                client_phone = appt[1]
+                appt_type = int(appt[2])
+                day_of_week = appt[3]
+                start_time_hour = int(appt[4])
+                #for each record read, the appointment number is added
+                appt_num +=1
+                #to find out the appointment in weekly_calander list which was created at the beginning of main function by using find_appointment_by_time function below
+                booking = find_appointment_by_time(day_of_week,start_time_hour)
+                #set the attributes to class using Appointment class method
+                booking.schedule(client_name,client_phone,appt_type)
+            #close the file after completed the for loop
+            openUp.close()
+            print(f"{appt_num} previously scheduled appointments have been loaded")
 
 def print_menu():#individual work
     '''
@@ -73,85 +95,95 @@ def print_menu():#individual work
     print (" 3) Print calendar for a specific day")
     print (" 4) Cancel an appointment")
     print (" 9) Exit the system")
+    # Global the variable here so it can be used in main function while loop. 
     global userchoice 
     userchoice= int(input("Enter your selection: "))
 
-def show_appointments_by_name(): #Sam
+def show_appointments_by_name(): #Sam - Ho Sum Chan
     '''
     1. Receives the client name of the appointment(s) to show
     2. Searches the list of Appointments for corresponding client name, allowing for partial & non-case sensitive matches
     3. Displays all matching appointments in the format given in the Sample Run (hint: use the __str__() method implicitly)
 
     '''
+    client_name = input("Please enter the client name: ")
     for appt in weekly_calendar:
             if client_name.lower() in appt.get_client_name().lower():
                 print(appt)
 
-def show_appointments_by_day(): #Sam
+def show_appointments_by_day(): #Sam - Ho Sum Chan 
     '''
     1. Receives the day of the appointments to show
     2. Searches the list of Appointments for the corresponding day
     3. Displays all matching appointments in the format given in the Sample Run (hint: use the __str__() method implicitly)
 
     '''
+    day = input ("Please enter the day you are cheaking: ")
     for appt in weekly_calendar:
             if appt.get_day_of_week().lower() == day.lower():
                 print(appt)
     
 
-def save_scheduled_appointments():#Gordon
+def save_scheduled_appointments():#Gordon - Chi Wai Tsui
     '''
     1. Inputs appointment filename from user, checks if the file already exists and if so, allows user to proceed (i.e. overwrite the file) or repeat the filename input
     2. Iterates over each appointment in the list and if scheduled (i.e. appt_type != 0), writes the appointment to the file in the proper CSV format (hint: use the format_record() method)
     3. Returns the number of scheduled appointments saved
 
     '''
+    #Ask for user input if they want to save the appointments data
     saveFile = input("Would you like to save all scheduled appointments to a file (Y/N)?")
     if saveFile.upper() == "Y":
+        #ask user input for the file name
         fileName = input("Enter appointment filename: ")
-        import os
+        #declare the record wrote in the file
         rec=0
+        #using os module to check if the file is existed or not. 
         if os.path.exists(fileName):
+            #confirm with client if they want to overwrite the file
             confirm = input("File already exists. Do you want to overite it (Y/N)?")
             if confirm.upper() =="Y":
+                #using "w" method to overwrite all the existing data in the file. 
                 f= open(fileName,"w")
-                for day in week:
-                    for time in range (9,17):
-                        if appt_list[day][time]!='':
-                            f.write(appt_list[day][time].format_record())
-                            rec+=1
+                for appt in weekly_calendar:
+                    #since created the calendad included all the appointment object for all days all time slot no matter it has appointment or not. Thus here need to check if there is client name exist, only if client name data is not null (mean a confirmed booking) will be record in the file. 
+                    if appt.get_client_name()!="":        
+                        f.write(appt.format_record())
+                        #to confirm each entry will be in a new line. also align with the load appointment function coding. 
+                        f.write("\n")
+                        #add 1 record for each entry
+                        rec+=1
                 f.close()
                 print(f"{rec} scheduled appointments have been successfully saved")
             else:
                 fileName = input("Enter appointment filename: ")
                 f=open(fileName,'w')
-                for day in week:
-                    for time in range (9,17):
-                        if appt_list[day][time]!='':
-                            f.write(appt_list[day][time].format_record())
-                            rec+=1
+                for appt in weekly_calendar:
+                    if appt.get_client_name()!="":        
+                        f.write(appt.format_record())
+                        f.write("\n")
+                        rec+=1
                 f.close()
                 print(f"{rec} scheduled appointments have been successfully saved")
         else:
             f = open(fileName,"w")
-            for day in week:
-                for time in range (9,17):
-                    if appt_list[day][time]!='':
-                        f.write(appt_list[day][time].format_record())
-                        rec +=1
+            for appt in weekly_calendar:   
+                    if appt.get_client_name()!="":     
+                        f.write(appt.format_record())
+                        f.write("\n")
+                        rec+=1
             f.close()
             print(f"{rec} scheduled appointments have been successfully saved")
-    # for day in week: 
-    #     for book in appt_list[day].values():
-    #         if book:
-    #             print (book)
 
-def cancel_appointment(calender): #Nam
 
+def cancel_appointment(): #Nam - Grantly Tong
+    '''
+    Cancel appointment with user input the appointment name
+    '''
     print("** Cancel an appointment **")
     day = input("What day: ")
-    hour = input("Enter start hour (24 hour clock): ")
-    appt = find_appointment_by_time(calender, day, hour)
+    hour = int(input("Enter start hour (24 hour clock): "))
+    appt = find_appointment_by_time(day, hour)
 
     if appt:
         print(f"{day}, {hour}, - , {appt.get_end_time_hour()}, for , {appt.get_client_name()}, has been cancelled!")
@@ -161,23 +193,32 @@ def cancel_appointment(calender): #Nam
         print("Appointment Not Found")
 
 
-def schedule_appointment(): #Gordon
+def schedule_appointment(): #Gordon - Chi Wai Tsui
+    '''
+    Making appointment as per using input
+    '''
     print ("** Schedule an appintment **")
     day_of_week = input("What day: ")
     start_time_hour = int(input("Enter start hour (24 hour clock): "))
-    while appt_list[day_of_week][start_time_hour]!='':
-        print ("Sorry, the time slot is not available, please re-enter")
-        start_time_hour = int(input("Enter start hour (24 hour clock): "))
+    # check if the provided day and time slot has other client appointment or not by checking the client_name attribute. 
+    if find_appointment_by_time(day_of_week,start_time_hour).get_client_name()!='':
+        print ("Sorry, the time slot is booked already!")
+    # for the incorrect input of day or hours, return the fail message. 
+    #note that both failure condition will return to main menu instead of asking for reenter 
+    elif day_of_week not in days_of_the_week or start_time_hour not in available_hours:
+        print ("Sorry that time slot is not in the weekly calendar!")    
+    #simply ask for user input and then using schedule method to save the appointment. 
     else:
         client_name = input("Client Name: ")
         client_phone = input("Client Phone: ")
+        print ("Appointment types")
         appt_type = int(input("1: Mens Cut $50, 2: Ladies Cut $80, 3: Mens Colouring $50, 4: Ladies Colouring $120\nType of Appointment: "))
-        appt_list[day_of_week][start_time_hour] = ap.Appointment(day_of_week,start_time_hour)
-        appt_list[day_of_week][start_time_hour].schedule(client_name,client_phone,appt_type)
+        appt = find_appointment_by_time(day_of_week,start_time_hour)
+        appt.schedule(client_name,client_phone,appt_type)
         print (f"OK, {client_name}'s appointment is scheduled")
         
 
-def main(): #Gordon
+def main(): #Gordon - Chi Wai Tsui
     '''
     1. Entry point for the Appointment Management System
     2. Coordinates the overall processing:
@@ -191,12 +232,16 @@ def main(): #Gordon
 
     '''
     print ("Starting the Appointment Manager System")
+    #create the weekly schedule first
     create_weekly_calendar()
+    #load the scheudle appointments
     load_scheduled_appointments()
     print_menu()
+    # ask for user input again if they do a wront input
     while userchoice not in [1,2,3,4,9]:
         print ("Sorry that is not a valid appointment type!")
         print_menu()
+    # if the user keep enter the number, the progrm will continue running until they enter "9" and trigger exit() function
     while userchoice:
         match userchoice:
             case 1:

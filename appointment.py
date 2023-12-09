@@ -61,6 +61,4 @@ class Appointment:
 
     #return string representation of the appointment object
     def __str__(self):
-        start_time_str = f"{self.start_time_hour:02d}:00"
-        end_time_str = f"{self.get_end_time_hour():02d}:00"
-        return f"{self.client_name:19s} {self.client_phone:14s} {self.day_of_week:9s} {start_time_str:7s} - {end_time_str:9s} {self.get_appt_type_desc():19s}"
+        return f"{self.client_name:20s}{self.client_phone:15s}{self.day_of_week:10s}{self.start_time_hour:>2}:00  - {self.get_end_time_hour()}:00 {self.get_appt_type_desc():^20}"
