@@ -70,7 +70,9 @@ def show_appointments_by_name(): #Sam
     3. Displays all matching appointments in the format given in the Sample Run (hint: use the __str__() method implicitly)
 
     '''
-
+    for appt in weekly_calendar:
+        if client_name.lower() in appt.get_client_name().lower():
+            print(appt)
 
 def show_appointments_by_day(): #Sam
     '''
@@ -79,7 +81,9 @@ def show_appointments_by_day(): #Sam
     3. Displays all matching appointments in the format given in the Sample Run (hint: use the __str__() method implicitly)
 
     '''
-
+    for appt in weekly_calendar:
+        if appt.get_day_of_week().lower() == day.lower():
+            print(appt)
     
 
 def save_scheduled_appointments():#Gordon
