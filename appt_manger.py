@@ -9,17 +9,30 @@ def create_weekly_calendar():#Nam
 
     '''
 
+    calendar = []
+    days_of_the_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    available_hours = ["09", "10", "11", "12", "13", "14", "15", "16"]
 
+    for day in days_of_the_week:
+        for hour in available_hours:
+            obj = apt.appointment(day, hour)
+            calendar.append(obj)
 
-create_weekly_calendar()
-def find_appointment_by_time(day_of_week,start_time_hour):#Nam
+    return calendar
+    
+
+def find_appointment_by_time(calender, day, start_hour):#Nam
     '''
     1. Receives the day and start hour of the appointment to find
     2. Searches the list of Appointments for corresponding day and start hour
     3. If the appointment is found, returns the Appointment object, otherwise returns nothing
 
     '''
+    for appointment in calender:
+        if appointment.get_day_of_week() == day and appointment.get_start_time_hour() == start_hour:
+            return appointment
 
+    return None
 
 def load_scheduled_appointments():#Gordon
     '''
@@ -74,6 +87,7 @@ def show_appointments_by_name(): #Sam
         if client_name.lower() in appt.get_client_name().lower():
             print(appt)
 
+
 def show_appointments_by_day(): #Sam
     '''
     1. Receives the day of the appointments to show
@@ -82,8 +96,10 @@ def show_appointments_by_day(): #Sam
 
     '''
     for appt in weekly_calendar:
+
         if appt.get_day_of_week().lower() == day.lower():
             print(appt)
+
     
 
 def save_scheduled_appointments():#Gordon
@@ -133,10 +149,22 @@ def save_scheduled_appointments():#Gordon
     #         if book:
     #             print (book)
 
-def cancel_appointment(): #Nam
-    pass
+def cancel_appointment(calender): #Nam
 
-def schedule_appointment():
+    print("** Cancel an appointment **")
+    day = input("What day: ")
+    hour = input("Enter start hour (24 hour clock): ")
+    appt = find_appointment_by_time(calender, day, hour)
+
+    if appt:
+        print(f"{day}, {hour}, - , {appt.get_end_time_hour()}, for , {appt.get_client_name()}, has been cancelled!")
+        appt.cancel()
+
+    else:
+        print("Appointment Not Found")
+
+
+def schedule_appointment(): #Gordon
     print ("** Schedule an appintment **")
     day_of_week = input("What day: ")
     start_time_hour = int(input("Enter start hour (24 hour clock): "))

@@ -14,7 +14,7 @@ days_of_the_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sat
 available_hours = [9, 10, 11, 12, 13, 14, 15, 16]
 
 
-def create_weekly_calendar():  
+def create_weekly_calendar():  #Grantly Tong
     '''
     1. Iterates through each day of the week (Monday to Saturday)
     2. For each day, iterates through each available hour (9 to 16)
@@ -26,7 +26,7 @@ def create_weekly_calendar():
             weekly_calendar.append(appt)
     return weekly_calendar
 
-def find_appointment_by_time(day_of_week, start_time_hour):  
+def find_appointment_by_time(day_of_week, start_time_hour):  #Grantly Tong
     '''
     1. Receives the day and start hour of the appointment to find
     2. Searches the list of Appointments for corresponding day and start hour
@@ -37,7 +37,8 @@ def find_appointment_by_time(day_of_week, start_time_hour):
             if appointment.get_start_time_hour() == start_time_hour:
                 return appointment
 
-def load_scheduled_appointments():  
+def load_scheduled_appointments():  #(Gordon) Chi Wai Tsui
+
     '''
     1. Inputs appointment filename from user
     2. Iterates over each line (i.e. appointment) in the file, parsing the attribute values into separate variables
@@ -45,6 +46,7 @@ def load_scheduled_appointments():
     4. Returns the number of scheduled appointments loaded
     '''
     # Get user input to confirm if they want to import the data from previous file
+
     load = input("Would you like to load previously scheduled appointments from a file (Y/N)? ")
     if load.upper() == "Y":
         fileOpen = input("Enter appointment filename: ")
@@ -63,11 +65,13 @@ def load_scheduled_appointments():
                 # split menthod to get the readline into a list by separate it with each comma
                 appt = info.split(",")
                 # assign the value to variable
+
                 client_name = appt[0]
                 client_phone = appt[1]
                 appt_type = int(appt[2])
                 day_of_week = appt[3]
                 start_time_hour = int(appt[4])
+
                 # for each record read, the appointment number is added
                 appt_num += 1
                 # to find out the appointment in weekly_calander list which was created at the beginning of main function by using find_appointment_by_time function below
@@ -95,11 +99,13 @@ def print_menu():
     global userchoice
     userchoice = int(input("Enter your selection: "))
 
-def show_appointments_by_name(): 
+def show_appointments_by_name(): #Sam - Ho Sum Chan
+
     '''
     1. Receives the client name of the appointment(s) to show
     2. Searches the list of Appointments for corresponding client name, allowing for partial & non-case sensitive matches
     3. Displays all matching appointments in the format given in the Sample Run (hint: use the __str__() method implicitly)
+
     '''
     # initialize a variable "flag" to 0. It will be used later to check if any appointments are found.
     flag = 0
@@ -119,11 +125,13 @@ def show_appointments_by_name():
     if flag == 0:
         print("No appointments found.")
 
-def show_appointments_by_day(): 
+def show_appointments_by_day(): #Sam - Ho Sum Chan 
+
     '''
     1. Receives the day of the appointments to show
     2. Searches the list of Appointments for the corresponding day
     3. Displays all matching appointments in the format given in the Sample Run (hint: use the __str__() method implicitly)
+
     '''
     print("\n** Print calendar for a specific day **")
     day = input("Enter day of week: ")
@@ -136,7 +144,7 @@ def show_appointments_by_day():
         if appt.get_day_of_week().capitalize() == day.capitalize():
             print(appt)
     
-def save_scheduled_appointments():  
+def save_scheduled_appointments():  #Gordon - Chi Wai Tsui
     '''
     1. Inputs appointment filename from user, checks if the file already exists and if so, allows user to proceed (i.e. overwrite the file) or repeat the filename input
     2. Iterates over each appointment in the list and if scheduled (i.e. appt_type != 0), writes the appointment to the file in the proper CSV format (hint: use the format_record() method)
@@ -187,7 +195,7 @@ def save_scheduled_appointments():
             print(f"{rec} scheduled appointments have been successfully saved\nGood Bye!")
 
 
-def cancel_appointment():  
+def cancel_appointment():  #Grantly Tong
     '''
     Cancel appointment with user input the appointment name
     '''
@@ -206,7 +214,7 @@ def cancel_appointment():
     print("Sorry that time slot is not in the weekly calendar!\n")
 
 
-def schedule_appointment(): 
+def schedule_appointment(): #Gordon Chi Wai Tsui
     '''
     Making appointment as per using input
     '''
@@ -237,7 +245,7 @@ def schedule_appointment():
             print(f"OK, {client_name}'s appointment is scheduled!")
 
 
-def main(): 
+def main(): #Gordon Chi Wai Tsui
     '''
     1. Entry point for the Appointment Management System
     2. Coordinates the overall processing:
@@ -281,6 +289,7 @@ def main():
                 exit()
 
 
-if __name__ == "__main__":
+if __name__ =="__main__":
     main()
 
+    
