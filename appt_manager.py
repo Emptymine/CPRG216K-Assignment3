@@ -1,5 +1,5 @@
 # Group 9 - (Gordon) Chi Wai Tsui, (Sam) Ho Sum Chan, Grantly Tong
-# Date 12-Dec-2023
+# Date 08-Dec-2023
 
 
 # import appointment as ap for the Class "Appointment" and its method
@@ -101,16 +101,21 @@ def show_appointments_by_name():
     2. Searches the list of Appointments for corresponding client name, allowing for partial & non-case sensitive matches
     3. Displays all matching appointments in the format given in the Sample Run (hint: use the __str__() method implicitly)
     '''
+    # initialize a variable "flag" to 0. It will be used later to check if any appointments are found.
     flag = 0
     print("\n** Find appointment by name**")
     client_name = input("Enter Client Name: ")
     print("Appointments for ", client_name, "\n")
     print("{:20s}{:15s}{:10s}{:10s}{:10s}{:20s}".format("Client Name","Phone", "Day", "Start", "End", "Type"))
     print("-"*85)
+    # iterates through each appointment in the "weekly_calendar"
     for appt in weekly_calendar:
+        #checks whether the entered client name is a string of client name in the current appointment or not
         if client_name.lower() in appt.get_client_name().lower():
             print(appt)
+            #sets the flag to "1" to indicate that there is appointed already
             flag = 1
+    # no appointments were found if it is still "0"
     if flag == 0:
         print("No appointments found.")
 
@@ -125,7 +130,9 @@ def show_appointments_by_day():
     print("Appointments for ", day.capitalize(), "\n")
     print("{:20s}{:15s}{:10s}{:10s}{:10s}{:20s}".format("Client Name","Phone", "Day", "Start", "End", "Type"))
     print("-"*85)
+    # iterates through each appointment in "weekly_calendar"
     for appt in weekly_calendar:
+        # checks whether the entered day match the day of the current appointments. It it matches, print the appointment details
         if appt.get_day_of_week().capitalize() == day.capitalize():
             print(appt)
     
